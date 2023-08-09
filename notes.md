@@ -108,3 +108,44 @@ contract SimpleStorage {
 
 }
 ```
+
+We are storing the structures as an array here
+
+```sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.7;
+
+// Contract: 0xd9145CCE52D386f254917e481eB44e9943F39138
+contract SimpleStorage {
+    uint256 public favoriteNumber;
+
+    struct People {
+        uint256 favoriteNumber;
+        string name;
+    }
+
+    // 这里用people数组来存储多个`struct`的实例`People`
+    People[] public people;
+
+    // Add `people` function
+    function addPerson(string memory _name, uint256 _favoriteNumber) public  {
+        People memory newPerson = People({favoriteNumber: _favoriteNumber, name: _name});
+        // People memory newPerson = People(_favoriteNumber, _name);
+        people.push(newPerson);
+    }
+
+    function store(uint256 _favoriteNumber) public {
+        favoriteNumber = _favoriteNumber;
+    }
+
+    // getter function of favoriteNumber
+    function retrieve() public view returns(uint256) {
+        return favoriteNumber;
+    }
+
+}
+```
+
+> - 创建了 people 数组，编制后会有一个`people`的按钮，这里可以输入`index`来找到对应的 structure；
+> - 同时，这里还写了`addPerson`函数来添加 structure 到 array 中；
+> - `memory`是一种 solidity 的存储方式，这里表示的是临时存储，函数执行完毕后数据会被清除。
