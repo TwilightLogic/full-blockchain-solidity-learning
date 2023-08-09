@@ -77,3 +77,34 @@ contract SimpleStorage {
 - private: only visible in current contract.(此合约可见)
 - external: only visible externally.(合约外部可见，合约外的账户可以调用这个函数)
 - internal(default visibility ): only visible internally.(合约内部可见，这有这个合约或者继承它的合约可以调取)
+
+### Arrays and Structure
+
+We want to store different people with different numbers here. So we are using `struct`.
+
+```sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.7;
+
+// Contract: 0xd9145CCE52D386f254917e481eB44e9943F39138
+contract SimpleStorage {
+    uint256 public favoriteNumber;
+    // Instantiate a person
+    People public person = People({favoriteNumber: 12, name: 'Logic'});
+
+    struct People {
+        uint256 favoriteNumber;
+        string name;
+    }
+
+    function store(uint256 _favoriteNumber) public {
+        favoriteNumber = _favoriteNumber;
+    }
+
+    // getter function of favoriteNumber
+    function retrieve() public view returns(uint256) {
+        return favoriteNumber;
+    }
+
+}
+```
