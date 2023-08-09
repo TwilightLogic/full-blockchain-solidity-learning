@@ -163,3 +163,25 @@ EVM can access and store information in six places:
 
 > Data location can only be specified for `array`, `struct` or `mapping` types
 > `string` type actually is a `bytes` type
+
+### Mappings
+
+A mapping is a data structure where a key is "mapped" to a single value.
+
+```sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.7;
+
+// Contract: 0xd9145CCE52D386f254917e481eB44e9943F39138
+contract SimpleStorage {
+    uint256 public favoriteNumber;
+
+    mapping(string => uint256) public nameToFavoriteNumber;
+
+    // Add `people` function
+    function addPerson(string memory _name, uint256 _favoriteNumber) public  {
+        nameToFavoriteNumber[_name] = _favoriteNumber;
+    }
+
+}
+```
