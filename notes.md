@@ -149,3 +149,17 @@ contract SimpleStorage {
 > - 创建了 people 数组，编制后会有一个`people`的按钮，这里可以输入`index`来找到对应的 structure；
 > - 同时，这里还写了`addPerson`函数来添加 structure 到 array 中；
 > - `memory`是一种 solidity 的存储方式，这里表示的是临时存储，函数执行完毕后数据会被清除。
+
+### Memory, Storage and Calldata
+
+EVM can access and store information in six places:
+
+1. Stack
+2. Memory: 可以被修改的临时变量
+3. Storage: 可以被修改的永久变量
+4. Calldata: 不能被修改的临时变量
+5. Code
+6. Logs
+
+> Data location can only be specified for `array`, `struct` or `mapping` types
+> `string` type actually is a `bytes` type
