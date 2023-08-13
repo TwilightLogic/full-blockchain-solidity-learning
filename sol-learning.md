@@ -1,4 +1,4 @@
-# Solidity Learning in 1 day
+# Solidity Learning
 
 ## Chapter #1
 
@@ -340,4 +340,20 @@ Solidity 中变量按作用域划分有三种，分别是状态变量（state va
     bytes1[] array5;
     address[] array6;
     bytes array7;
+```
+
+## 映射类型 Mapping
+
+```sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.7;
+
+contract Test {
+    // Learning Mapping
+    mapping (uint => address) public idToAddress;
+
+    function writeMap(uint _key, address _Value) public {
+        idToAddress[_key] = _Value;
+    }
+}
 ```
