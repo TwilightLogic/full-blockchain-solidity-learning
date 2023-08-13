@@ -238,3 +238,30 @@ contract SimpleStorage {
         balance = address(this).balance;
     }
 ```
+
+## 函数输出
+
+### 结构式赋值
+
+```sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.7;
+
+contract Test {
+
+    // It returns the variables automatically, we don't have to add `return` in function
+    function returnNamed() public pure returns (uint256 _number, bool _bool, uint256[3] memory _array) {
+        _number = 2;
+        _bool = false;
+        _array = [uint256(3), 2, 1];
+    }
+
+    // Destructuring assignments
+    function readReturn() public pure {
+        uint256 _number;
+        bool _bool;
+        uint256[3] memory _array;
+        (_number, _bool, _array) = returnNamed();
+    }
+}
+```
