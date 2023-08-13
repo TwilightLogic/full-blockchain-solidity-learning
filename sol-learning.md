@@ -329,3 +329,15 @@ contract Test {
 Solidity 中变量按作用域划分有三种，分别是状态变量（state variable），局部变量（local variable）和全局变量(global variable)
 
 状态变量是存储在链上的变量，所有合约内函数都可以访问，gas 耗费是最高的。
+
+## 引用类型, array, struct
+
+在可变长度数组中，`bytes`比较特殊，它是数组，但是不用加`[]`
+
+```sol
+    // 可变长度 Array
+    uint[] array4;
+    bytes1[] array5;
+    address[] array6;
+    bytes array7;
+```
