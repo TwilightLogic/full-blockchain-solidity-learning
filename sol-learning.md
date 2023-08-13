@@ -357,3 +357,21 @@ contract Test {
     }
 }
 ```
+
+## 变量初始值
+
+### `delete` 操作符
+
+`delete a` 会让变量 `a` 的值变为初始值。
+
+```sol
+// delete操作符
+bool public _bool2 = true;
+function d() external {
+    delete _bool2; // delete 会让_bool2变为默认值，false
+}
+```
+
+## 常数 constant 和 immutable
+
+状态变量声明`constant`（常量）或 `immutable`（不变量）后，不能在合约后更改数值；并且还可以节省 gas。另外，只有数值变量可以声明`constant`和`immutable`；`string`和`bytes`可以声明为`constant`，但不能为`immutable`。
