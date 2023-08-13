@@ -1,4 +1,4 @@
-# Full BlockChain Solidity Learning
+# Solidity Learning in 1 day
 
 ## Chapter #1
 
@@ -187,3 +187,54 @@ contract SimpleStorage {
 ```
 
 ### Import from other Contracts
+
+# Learn from WTF Academic
+
+## 函数类型
+
+### `pure` 关键字
+
+`pure` 函数不能读也不能写，如果这样 ⬇️ 的代码加上`pure`关键字就会报错，如果这个`add()`在一个 contract 中，内部定义了 `uint256 public number = 5`；但这个`pure`函数既不能读也不能写，所以他不可能读取`number`变量，更加不能再改变`number`的变量
+
+```sol
+ // 默认
+    function add() external {
+        number = number + 1;
+    }
+```
+
+但是我们可以这样 ⬇️
+
+可以给函数传递一个参数 `_number`，然后让他返回 `_number+1`。
+
+```sol
+    // pure: 纯纯牛马
+    function addPure(uint256 _number) external pure returns(uint256 new_number){
+        new_number = _number+1;
+    }
+```
+
+### `view`关键字
+
+`view`那就是只能读，不能写了
+
+```sol
+    // view: 看客
+    function addView() external view returns(uint256 new_number) {
+        new_number = number + 1;
+    }
+```
+
+### `internal` 和 `external`
+
+`internal`函数（内部函数）是没有办法被直接调用的，意思是部署了一个合约，里面有个 internal 函数，但是我们在部署后在 remix 是找不到这个函数的 button 的
+
+### payable
+
+```sol
+   // payable: 递钱，能给合约支付eth的函数
+    function minusPayable() external payable returns(uint256 balance) {
+        minus();
+        balance = address(this).balance;
+    }
+```
