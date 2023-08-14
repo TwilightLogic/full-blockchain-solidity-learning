@@ -375,3 +375,20 @@ function d() external {
 ## 常数 constant 和 immutable
 
 状态变量声明`constant`（常量）或 `immutable`（不变量）后，不能在合约后更改数值；并且还可以节省 gas。另外，只有数值变量可以声明`constant`和`immutable`；`string`和`bytes`可以声明为`constant`，但不能为`immutable`。
+
+## 构造函数和修饰器
+
+修饰器（modifier）是 solidity 特有的语法，类似于面向对象编程中的 decorator，声明函数拥有的特性，并减少代码冗余。它就像钢铁侠的智能盔甲，穿上它的函数会带有某些特定的行为。modifier 的主要使用场景是运行函数前的检查，例如地址，变量，余额等。
+
+这里做一个`onlyOwner`的 modifier：
+
+```sol
+   // 定义modifier
+   modifier onlyOwner {
+      require(msg.sender == owner); // 检查调用者是否为owner地址
+      _; // 如果是的话，继续运行函数主体；否则报错并revert交易
+   }
+
+```
+
+带有`onlyOwner`修饰符的函数只能被 owner 地址调用，比如下面这个例子：
