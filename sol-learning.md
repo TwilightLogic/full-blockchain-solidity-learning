@@ -392,3 +392,53 @@ function d() external {
 ```
 
 带有`onlyOwner`修饰符的函数只能被 owner 地址调用，比如下面这个例子：
+
+```sol
+   function changeOwner(address _newOwner) external onlyOwner{
+      owner = _newOwner; // 只有owner地址运行这个函数，并改变owner
+   }
+```
+
+我们定义了一个 changeOwner 函数，运行他可以改变合约的 owner，但是由于 onlyOwner 修饰符的存在，只有原先的 owner 可以调用，别人调用就会报错。这也是最常用的控制智能合约权限的方法。
+
+## 事件 Event
+
+Solidity 中的事件（event）是 EVM 上日志的抽象，它具有两个特点：
+
+- 响应：应用程序（ethers.js）可以通过 RPC 接口订阅和监听这些事件，并在前端做响应。
+- 经济：事件是 EVM 上比较经济的存储数据的方式，每个大概消耗 2,000 gas；相比之下，链上存储一个新变量至少需要 20,000 gas。
+
+事件的 demo
+
+```sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.7;
+
+contract Event {
+    // 记录每个地址的持币数量
+    mapping (address => uint256) public _balances;
+
+    // 定义event，记录transfer交易的转账地址，接收地址和转账数量
+    event Transfer(address indexed from, address indexed to, uint256 value);
+
+    // 执行转账逻辑
+    function _transfer (
+        address from,
+        address to,
+        uint256 amount
+    ) external {
+        // 初始化一些代币
+        // 转账地址的代币初始化为1000
+        _balances[from] = 1000;
+
+        // 1000 - 转出去的代币
+        _balances[from] -= amount;
+        _balances[to] += amount;
+
+        // 释放事件
+        emit Transfer(from, to, amount);
+    }
+}
+```
+
+详情的需要看 [wtf](https://www.wtf.academy/solidity-start/Event/) 的教程
