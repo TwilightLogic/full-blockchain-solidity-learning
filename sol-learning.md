@@ -442,3 +442,58 @@ contract Event {
 ```
 
 详情的需要看 [wtf](https://www.wtf.academy/solidity-start/Event/) 的教程
+
+## 继承 inheritance
+
+继承是面向对象编程很重要的组成部分，可以显著减少重复代码。如果把合约看作是对象的话，solidity 也是面向对象的编程，也支持继承。
+
+- `virtual`：父合约中的函数，如果希望子合约重写，需要加上 `virtual` 关键字。
+
+- `override`：子合约重写了父合约中的函数，需要加上 `override` 关键字。
+
+demo is here
+
+```sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.7;
+
+contract Yeye {
+    event Log(string msg);
+
+    function hip() public virtual {
+        emit Log("Yeye");
+    }
+
+    function pop() public virtual {
+        emit Log("Yeye");
+    }
+
+    function yeye() public virtual {
+        emit Log("Yeye");
+    }
+}
+
+contract Baba is Yeye {
+    function hip() public override {
+        emit Log("Baba");
+    }
+
+    function pop() public override {
+        emit Log("Baba");
+    }
+
+    function baba() public virtual  {
+        emit Log("Baba");
+    }
+}
+```
+
+### 多重继承
+
+`solidity` 的合约可以继承多个合约。规则：
+
+继承时要按辈分最高到最低的顺序排。比如我们写一个 `Erzi` 合约，继承 Yeye 合约和 Baba 合约，那么就要写成 `contract Erzi is Yeye, Baba`，而不能写成 `contract Erzi is Baba, Yeye`，不然就会报错。
+
+如果某一个函数在多个继承的合约里都存在，比如例子中的 `hip()`和 `pop()`，在子合约里必须重写，不然会报错。
+
+重写在多个父合约中都重名的函数时，`override` 关键字后面要加上所有父合约名字，例如 `override(Yeye, Baba)`。
