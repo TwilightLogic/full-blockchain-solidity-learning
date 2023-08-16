@@ -35,3 +35,54 @@ receive()存在?   fallback()
       /     \
 receive()   fallback()
 ```
+
+## 发送 ETH
+
+`transfer()`, `send()`和`call()`都是可以发送 ETH 的。但`call()`是被普遍认为推荐的
+
+### transfer
+
+- 其实就是`接收方.transfer(发送ETH数额)`
+- `transfer()`如果转账失败，会自动`revert`（回滚交易）
+
+```sol
+// 用transfer()发送ETH
+function transferETH(address payable _to, uint256 amount) external payable{
+    _to.transfer(amount);
+}
+```
+
+### send
+
+- 其实也是`接收方.transfer(发送ETH数额)`
+- `send()`转账失败的话，也不会`revert`
+- `send()`的返回值是`bool`，成功或失败
+
+```sol
+// send()发送ETH
+function sendETH(address payable _to, uint256 amount) external payable{
+    // 处理下send的返回值，如果失败，revert交易并发送error
+    bool success = _to.send(amount);
+    if(!success){
+        revert SendFailed();
+    }
+}
+```
+
+### call
+
+- 用法是`接收方地址.call{value: 发送ETH数额}("")`
+- `call()`没有`gas`限制，可以支持对方合约`fallback()`或`receive()`函数的复杂逻辑
+- `call()`如果转账失败，也不会`revert`
+- `call()`的返回值是(bool, data)，需要额外的逻辑来处理
+
+```sol
+// call()发送ETH
+function callETH(address payable _to, uint256 amount) external payable{
+    // 处理下call的返回值，如果失败，revert交易并发送error
+    (bool success,) = _to.call{value: amount}("");
+    if(!success){
+        revert CallFailed();
+    }
+}
+```
