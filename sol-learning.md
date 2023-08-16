@@ -497,3 +497,53 @@ contract Baba is Yeye {
 如果某一个函数在多个继承的合约里都存在，比如例子中的 `hip()`和 `pop()`，在子合约里必须重写，不然会报错。
 
 重写在多个父合约中都重名的函数时，`override` 关键字后面要加上所有父合约名字，例如 `override(Yeye, Baba)`。
+
+## 抽象合约
+
+如果一个智能合约里至少有一个未实现的函数，即某个函数缺少主体{}中的内容，则必须将该合约标为 abstract，不然编译会报错；另外，未实现的函数需要加 virtual，以便子合约重写。
+
+```sol
+abstract contract InsertionSort{
+    function insertionSort(uint[] memory a) public pure virtual returns(uint[] memory);
+}
+```
+
+### 接口
+
+接口类似于抽象合约，但它不实现任何功能。接口的规则：
+
+1. 不能包含状态变量
+2. 不能包含构造函数
+3. 不能继承除接口外的其他合约
+4. 所有函数都必须是 external 且不能有函数体
+5. 继承接口的合约必须实现接口定义的所有功能
+
+虽然接口不实现任何功能，但它非常重要。接口是智能合约的骨架，定义了合约的功能以及如何触发它们：如果智能合约实现了某种接口（比如 ERC20 或 ERC721），其他 Dapps 和智能合约就知道如何与它交互。因为接口提供了两个重要的信息：
+
+1. 合约里每个函数的 bytes4 选择器以及函数签名函数名(每个参数类型）
+2. 接口 id（更多信息见 EIP165）
+
+另外，接口与合约 ABI（Application Binary Interface）等价，可以相互转换：编译接口可以得到合约的 ABI，利用 abi-to-sol 工具也可以将 ABI json 文件转换为接口 sol 文件。
+
+### 什么时候使用接口？
+
+如果我们知道一个合约实现了 IERC721 接口，我们不需要知道它具体代码实现，就可以与它交互。
+
+无聊猿 BAYC 属于 ERC721 代币，实现了 IERC721 接口的功能。我们不需要知道它的源代码，只需知道它的合约地址，用 IERC721 接口就可以与它交互，比如用 balanceOf()来查询某个地址的 BAYC 余额，用 safeTransferFrom()来转账 BAYC。
+
+```sol
+contract interactBAYC {
+    // 利用BAYC地址创建接口合约变量（ETH主网）
+    IERC721 BAYC = IERC721(0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D);
+
+    // 通过接口调用BAYC的balanceOf()查询持仓量
+    function balanceOfBAYC(address owner) external view returns (uint256 balance){
+        return BAYC.balanceOf(owner);
+    }
+
+    // 通过接口调用BAYC的safeTransferFrom()安全转账
+    function safeTransferFromBAYC(address from, address to, uint256 tokenId) external{
+        BAYC.safeTransferFrom(from, to, tokenId);
+    }
+}
+```
